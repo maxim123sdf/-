@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>办公室</title>
+    <style>
+        .banner {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            position: relative;
+        }
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .banner.admin-mode {
+            cursor: pointer;
+        }
+        .banner.admin-mode:hover::after {
+            content: '点击更换横幅图片';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .banner-input {
+            display: none;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .avatar-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #e0e0e0;
+            cursor: pointer;
+        }
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .avatar-container:hover::after {
+            content: '点击更换头像';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+        }
+        .avatar-input {
+            display: none;
+        }
+        .default-avatar {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 20px;
+        }
+        .welcome {
+            font-size: 1.2em;
+        }
+        .logout-btn {
+            padding: 8px 15px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+        .order-form {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .order-form input[type="number"] {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .create-btn {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .create-btn:hover {
+            background-color: #45a049;
+        }
+        .order-list {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .order-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-list th, .order-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-list th {
+            background-color: #f5f5f5;
+        }
+        .file-upload {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .file-list {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .file-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .file-list th, .file-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .file-list th {
+            background-color: #f5f5f5;
+        }
+        .download-btn {
+            padding: 4px 8px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+        .user-management {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .user-list table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .user-list th, .user-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .user-list th {
+            background-color: #f0f0f0;
+        }
+        .role-select {
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .save-btn {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .save-btn:hover {
+            background-color: #45a049;
+        }
+        .role-permissions {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .role-list table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .role-list th, .role-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .role-list th {
+            background-color: #f0f0f0;
+        }
+        .role-list input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+        .banner-management {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 40px);
+            margin-top: 20px;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .main-content {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .menu-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .menu-item:hover {
+            background-color: #e0e0e0;
+        }
+        .menu-item.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .role-info {
+            margin-top: 20px;
+        }
+        .role-card {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .role-card p {
+            margin: 10px 0;
+        }
+        .role-card ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .role-card li {
+            margin: 5px 0;
+        }
+        /* 聊天室样式 */
+        .chat-container {
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chat-header {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header h3 {
+            margin: 0;
+        }
+        .chat-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+            display: none;
+        }
+        .chat-messages.open {
+            display: block;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #e0e0e0;
+            overflow: hidden;
+        }
+        .message-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .message-content {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+        }
+        .message.self {
+            flex-direction: row-reverse;
+        }
+        .message.self .message-avatar {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+        .message.self .message-content {
+            background: #e3f2fd;
+        }
+        .message-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+        .chat-input.open {
+            display: flex;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .chat-input button {
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3>聊天室</h3>
+                <button class="chat-toggle" onclick="toggleChat()">▼</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input" id="chatInput">
+                <input type="text" id="messageInput" placeholder="输入消息..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+        <div class="banner" id="bannerContainer">
+            <input type="file" id="bannerImageInput" class="banner-input" accept="image/*" onchange="handleBannerImageUpload(event)">
+            <img src="" alt="办公室横幅" 
+                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 200%22><rect width=%22800%22 height=%22200%22 fill=%22%23f5f5f5%22/><text x=%22400%22 y=%22100%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2220%22>点击上传横幅图片</text></svg>';">
+        </div>
+        <div class="header">
+            <div class="avatar-container" onclick="document.getElementById('avatarInput').click()">
+                <input type="file" id="avatarInput" class="avatar-input" accept="image/*" onchange="handleAvatarUpload(event)">
+                <div id="avatarDisplay">
+                    <div class="default-avatar">头像</div>
+                </div>
+            </div>
+            <div class="welcome">欢迎来到办公室，<a href="profile.html" style="color: inherit; text-decoration: none;"><span id="userName"></span></a></div>
+            <button class="logout-btn" onclick="handleLogout()">退出登录</button>
+        </div>
+        <div class="layout">
+            <div class="sidebar">
+                <div class="menu-item active" onclick="switchContent('dashboard')">控制面板</div>
+                <div class="menu-item" onclick="switchContent('createOrder')">创建订单</div>
+                <div class="menu-item" onclick="switchContent('uploadFile')">上传文件</div>
+                <div class="menu-item" onclick="switchContent('orderList')">订单列表</div>
+                <div class="menu-item" onclick="switchContent('fileList')">文件列表</div>
+            </div>
+            <div class="main-content" id="content">
+                <!-- 内容将通过 JavaScript 动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 LeanCloud SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.12.0/dist/av-min.js"></script>
+    <script>
+        // 初始化 LeanCloud
+        AV.init({
+            appId: "H0RYZUGpZ6auG7Njrd4fbyWD-gzGzoHsz",
+            appKey: "tenY3Ksbmgns38v74l48Symx",
+            serverURL: "https://h0ryzugp.lc-cn-n1-shared.com"
+        });
+
+        /**
+         * 创建新订单
+         * @param {Event} event - 表单提交事件
+         */
+        async function createOrder(event) {
+            event.preventDefault();
+            const quantity = document.getElementById('orderQuantity').value;
+            const currentUser = AV.User.current();
+
+            if (!currentUser) {
+                alert('请先登录');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const Order = AV.Object.extend('Order');
+                const order = new Order();
+                
+                order.set('quantity', parseInt(quantity));
+                order.set('creator', AV.Object.createWithoutData('_User', currentUser.id));
+                order.set('status', 'pending'); // 订单状态：待处理
+                
+                await order.save();
+                
+                // 清空输入框
+                document.getElementById('orderQuantity').value = '';
+                
+                // 显示成功消息
+                alert('订单创建成功！');
+                
+                // 切换到订单列表并刷新
+                switchContent('orderList');
+            } catch (error) {
+                console.error('创建订单失败：', error);
+                alert('创建订单失败：' + (error.message || '未知错误'));
+            }
+        }
+
+        /**
+         * 删除订单
+         * @param {string} orderId - 要删除的订单ID
+         */
+        async function deleteOrder(orderId) {
+            if (!await checkPermission('deleteOrder')) {
+                alert('您没有删除订单的权限');
+                return;
+            }
+
+            if (!confirm('确定要删除这个订单吗？')) {
+                return;
+            }
+
+            try {
+                const order = AV.Object.createWithoutData('Order', orderId);
+                await order.destroy();
+                alert('订单删除成功！');
+                await loadOrders(); // 刷新订单列表
+            } catch (error) {
+                console.error('删除订单失败：', error);
+                alert('删除订单失败：' + (error.message || '未知错误'));
+            }
+        }
+
+        /**
+         * 加载订单列表
+         */
+        async function loadOrders() {
+            try {
+                const query = new AV.Query('Order');
+                query.include('creator'); // 包含创建者信息
+                query.descending('createdAt'); // 按创建时间降序排序
+                const orders = await query.find();
+                
+                const currentUser = AV.User.current();
+                const currentUserRole = currentUser.get('role');
+                
+                const orderListHtml = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>订单编号</th>
+                                <th>数量</th>
+                                <th>创建者</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orders.map(order => {
+                                const creator = order.get('creator');
+                                const creatorName = creator ? creator.get('username') : '未知用户';
+                                // 只有创建者和财务人员可以删除订单
+                                const canDelete = creator && (
+                                    creator.id === currentUser.id || 
+                                    currentUserRole === 'finance' ||
+                                    currentUserRole === 'admin'  // 管理员可以删除所有订单
+                                );
+                                return `
+                                    <tr>
+                                        <td>${order.id}</td>
+                                        <td>${order.get('quantity')}</td>
+                                        <td>${creatorName}</td>
+                                        <td>${order.get('status')}</td>
+                                        <td>${order.createdAt.toLocaleString()}</td>
+                                        <td>
+                                            ${canDelete ? 
+                                                `<button onclick="deleteOrder('${order.id}')" 
+                                                    style="padding: 4px 8px; background-color: #f44336; color: white; 
+                                                    border: none; border-radius: 4px; cursor: pointer;">
+                                                    删除
+                                                </button>` 
+                                                : '-'
+                                            }
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                
+                document.getElementById('orderList').innerHTML = orderListHtml;
+            } catch (error) {
+                console.error('加载订单失败：', error);
+                document.getElementById('orderList').innerHTML = '<p>加载订单失败，请刷新页面重试</p>';
+            }
+        }
+
+        /**
+         * 处理文件上传
+         * @param {Event} event - 表单提交事件
+         */
+        async function handleFileUpload(event) {
+            event.preventDefault();
+            
+            if (!await checkPermission('uploadFile')) {
+                alert('您没有上传文件的权限');
+                return;
+            }
+
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('请选择要上传的文件');
+                return;
+            }
+
+            try {
+                // 上传文件到 LeanCloud
+                const uploadedFile = await new AV.File(file.name, file).save();
+                
+                // 创建文件记录
+                const FileRecord = AV.Object.extend('FileRecord');
+                const fileRecord = new FileRecord();
+                
+                fileRecord.set('filename', file.name);
+                fileRecord.set('fileURL', uploadedFile.url());
+                fileRecord.set('uploader', AV.User.current());
+                fileRecord.set('fileSize', file.size);
+                
+                await fileRecord.save();
+                
+                // 清空文件输入
+                fileInput.value = '';
+                
+                // 显示成功消息
+                alert('文件上传成功！');
+                
+                // 切换到文件列表并刷新
+                switchContent('fileList');
+            } catch (error) {
+                console.error('上传失败：', error);
+                alert('上传失败：' + error.message);
+            }
+        }
+
+        /**
+         * 加载文件列表
+         */
+        async function loadFiles() {
+            try {
+                const query = new AV.Query('FileRecord');
+                query.include('uploader');
+                query.descending('createdAt');
+                const files = await query.find();
+                
+                const currentUser = AV.User.current();
+                const [canDeleteFile, canDownloadFile] = await Promise.all([
+                    checkPermission('deleteFile'),
+                    checkPermission('downloadFile')
+                ]);
+
+                const fileListHtml = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>文件名</th>
+                                <th>上传者</th>
+                                <th>大小</th>
+                                <th>上传时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${files.map(file => {
+                                const uploader = file.get('uploader');
+                                const uploaderName = uploader ? uploader.get('username') : '未知用户';
+                                const fileSize = formatFileSize(file.get('fileSize'));
+                                
+                                return `
+                                    <tr>
+                                        <td>${file.get('filename')}</td>
+                                        <td>${uploaderName}</td>
+                                        <td>${fileSize}</td>
+                                        <td>${file.createdAt.toLocaleString()}</td>
+                                        <td>
+                                            ${canDownloadFile ? 
+                                                `<a href="${file.get('fileURL')}" class="download-btn" target="_blank">下载</a>` : 
+                                                ''
+                                            }
+                                            ${canDeleteFile ? 
+                                                `<button onclick="deleteFile('${file.id}')" 
+                                                    style="margin-left: 8px; padding: 4px 8px; background-color: #f44336; 
+                                                    color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                                    删除
+                                                </button>` : 
+                                                ''
+                                            }
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                document.getElementById('fileList').innerHTML = fileListHtml;
+            } catch (error) {
+                console.error('加载文件列表失败：', error);
+                document.getElementById('fileList').innerHTML = '<p>加载文件列表失败，请刷新页面重试</p>';
+            }
+        }
+
+        /**
+         * 格式化文件大小
+         * @param {number} bytes - 文件大小（字节）
+         * @returns {string} 格式化后的大小
+         */
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        /**
+         * 处理头像上传
+         * @param {Event} event - 文件选择事件
+         */
+        async function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // 检查文件类型
+            if (!file.type.startsWith('image/')) {
+                alert('请选择图片文件');
+                return;
+            }
+
+            try {
+                // 显示上传中提示
+                const avatarDisplay = document.getElementById('avatarDisplay');
+                avatarDisplay.innerHTML = '<div class="default-avatar">上传中...</div>';
+
+                // 上传头像到 LeanCloud
+                const currentUser = AV.User.current();
+                const fileName = `avatar_${currentUser.id}_${Date.now()}.${file.type.split('/')[1]}`;
+                const avatarFile = new AV.File(fileName, file);
+                const savedFile = await avatarFile.save();
+                
+                // 更新用户的头像URL
+                currentUser.set('avatarUrl', savedFile.url());
+                await currentUser.save();
+                
+                // 更新显示
+                updateAvatarDisplay(savedFile.url());
+                
+                alert('头像上传成功！');
+            } catch (error) {
+                console.error('头像上传失败：', error);
+                alert('头像上传失败：' + error.message);
+                // 恢复默认显示
+                updateAvatarDisplay(null);
+            }
+        }
+
+        /**
+         * 更新头像显示
+         * @param {string} url - 头像URL
+         */
+        function updateAvatarDisplay(url) {
+            const avatarDisplay = document.getElementById('avatarDisplay');
+            if (url) {
+                avatarDisplay.innerHTML = `<img src="${url}" alt="用户头像" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><text x=%2220%22 y=%2220%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>头像</text></svg>';">`;
+            } else {
+                avatarDisplay.innerHTML = `<div class="default-avatar">头像</div>`;
+            }
+        }
+
+        /**
+         * 处理横幅图片上传
+         * @param {Event} event - 文件选择事件
+         */
+        async function handleBannerImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // 检查是否是管理员
+            const currentUser = AV.User.current();
+            if (currentUser.get('role') !== 'admin') {
+                alert('只有管理员可以更换横幅图片');
+                return;
+            }
+
+            // 检查文件类型
+            if (!file.type.startsWith('image/')) {
+                alert('请选择图片文件');
+                return;
+            }
+
+            try {
+                // 显示上传中的提示
+                const bannerImg = document.querySelector('.banner img');
+                bannerImg.style.opacity = '0.5';
+
+                // 上传图片到 LeanCloud
+                const bannerFile = await new AV.File('banner.jpg', file).save();
+                
+                // 保存或更新横幅设置
+                const query = new AV.Query('SystemSettings');
+                query.equalTo('key', 'bannerImage');
+                let settings = await query.first();
+                
+                if (!settings) {
+                    const SystemSettings = AV.Object.extend('SystemSettings');
+                    settings = new SystemSettings();
+                    settings.set('key', 'bannerImage');
+                }
+                
+                settings.set('value', bannerFile.url());
+                await settings.save();
+                
+                // 更新显示
+                bannerImg.src = bannerFile.url();
+                bannerImg.style.opacity = '1';
+                
+                alert('横幅更新成功！');
+                event.target.value = ''; // 清空文件输入
+            } catch (error) {
+                console.error('更新横幅失败：', error);
+                alert('更新横幅失败：' + error.message);
+                document.querySelector('.banner img').style.opacity = '1';
+            }
+        }
+        
+        /**
+         * 加载横幅图片
+         */
+        async function loadBanner() {
+            try {
+                const query = new AV.Query('SystemSettings');
+                query.equalTo('key', 'bannerImage');
+                const settings = await query.first();
+                
+                if (settings) {
+                    const bannerUrl = settings.get('value');
+                    document.querySelector('.banner img').src = bannerUrl;
+                }
+            } catch (error) {
+                console.error('加载横幅失败：', error);
+            }
+        }
+
+        /**
+         * 切换内容显示
+         * @param {string} section - 要显示的部分
+         */
+        function switchContent(section) {
+            // 更新菜单项状态
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.toLowerCase().includes(section)) {
+                    item.classList.add('active');
+                }
+            });
+
+            // 根据角色和选择的部分显示相应内容
+            const currentUser = AV.User.current();
+            const role = currentUser.get('role');
+            let content = '';
+
+            switch (section) {
+                case 'dashboard':
+                    content = `
+                        <h2>欢迎，${currentUser.get('username')}</h2>
+                        <div class="role-info">
+                            <h3>角色权限信息</h3>
+                            <div class="role-card">
+                                <p><strong>当前角色：</strong>${role || '无角色'}</p>
+                                <p><strong>可用权限：</strong></p>
+                                <ul id="permissionsList">
+                                    <li>正在加载权限信息...</li>
+                                </ul>
+                            </div>
+                        </div>`;
+                    
+                    // 在内容加载后获取权限信息
+                    setTimeout(async () => {
+                        const permissionsList = document.getElementById('permissionsList');
+                        if (role === 'admin') {
+                            permissionsList.innerHTML = '<li>管理员拥有所有权限</li>';
+                        } else {
+                            try {
+                                const query = new AV.Query('RolePermissions');
+                                query.equalTo('role', role);
+                                const rolePermission = await query.first();
+                                
+                                if (rolePermission) {
+                                    const permissions = [];
+                                    if (rolePermission.get('deleteOrder')) permissions.push('删除订单');
+                                    if (rolePermission.get('deleteFile')) permissions.push('删除文件');
+                                    if (rolePermission.get('uploadFile')) permissions.push('上传文件');
+                                    if (rolePermission.get('downloadFile')) permissions.push('下载文件');
+                                    
+                                    permissionsList.innerHTML = permissions.length > 0 ?
+                                        permissions.map(p => `<li>${p}</li>`).join('') :
+                                        '<li>暂无特殊权限</li>';
+                                } else {
+                                    permissionsList.innerHTML = '<li>暂无权限信息</li>';
+                                }
+                            } catch (error) {
+                                console.error('加载权限信息失败：', error);
+                                permissionsList.innerHTML = '<li>加载权限信息失败</li>';
+                            }
+                        }
+                    }, 0);
+                    break;
+                case 'createOrder':
+                    if (role === 'sales' || role === 'admin') {
+                        content = `
+                            <h2>创建订单</h2>
+                            <div class="order-form">
+                                <form id="orderForm">
+                                    <input type="number" id="orderQuantity" min="1" required placeholder="请输入数量">
+                                    <button type="submit" class="create-btn">创建订单</button>
+                                </form>
+                            </div>`;
+                    } else {
+                        content = '<h2>您没有权限访问此功能</h2>';
+                    }
+                    break;
+                case 'uploadFile':
+                    content = `
+                        <h2>上传文件</h2>
+                        <div class="file-upload">
+                            <form id="fileUploadForm">
+                                <input type="file" id="fileInput" required>
+                                <button type="submit" class="create-btn">上传</button>
+                            </form>
+                        </div>`;
+                    break;
+                case 'orderList':
+                    content = `
+                        <h2>订单列表</h2>
+                        <div class="order-list" id="orderList"></div>`;
+                    break;
+                case 'fileList':
+                    content = `
+                        <h2>文件列表</h2>
+                        <div class="file-list" id="fileList"></div>`;
+                    break;
+            }
+
+            // 更新内容
+            document.getElementById('content').innerHTML = content;
+
+            // 在内容更新后绑定事件监听器
+            if (section === 'createOrder') {
+                const orderForm = document.getElementById('orderForm');
+                if (orderForm) {
+                    orderForm.addEventListener('submit', createOrder);
+                }
+            } else if (section === 'uploadFile') {
+                const fileUploadForm = document.getElementById('fileUploadForm');
+                if (fileUploadForm) {
+                    fileUploadForm.addEventListener('submit', handleFileUpload);
+                }
+            }
+
+            // 加载列表数据
+            if (section === 'orderList') {
+                loadOrders();
+            } else if (section === 'fileList') {
+                loadFiles();
+            }
+        }
+
+        // 检查用户登录状态
+        async function checkLoginStatus() {
+            const currentUser = AV.User.current();
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('userName').textContent = currentUser.get('username');
+            updateAvatarDisplay(currentUser.get('avatarUrl'));
+            
+            const role = currentUser.get('role');
+            
+            // 设置横幅交互模式
+            const bannerContainer = document.getElementById('bannerContainer');
+            if (role === 'admin') {
+                bannerContainer.classList.add('admin-mode');
+                bannerContainer.onclick = () => document.getElementById('bannerImageInput').click();
+            } else {
+                bannerContainer.classList.remove('admin-mode');
+                bannerContainer.onclick = null;
+            }
+            
+            switchContent('dashboard');
+            
+            await loadBanner();
+        }
+
+        // 处理退出登录
+        async function handleLogout() {
+            try {
+                await AV.User.logOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('退出失败：', error);
+                alert('退出失败：' + error.message);
+            }
+        }
+
+        // 页面加载时检查登录状态
+        checkLoginStatus();
+
+        /**
+         * 加载用户列表
+         */
+        async function loadUserList() {
+            try {
+                const query = new AV.Query('_User');
+                query.ascending('username'); // 按用户名排序
+                const users = await query.find();
+                
+                const userListHtml = users.map(user => {
+                    const username = user.get('username');
+                    const currentRole = user.get('role');
+                    const isAdmin = username === 'admin';
+                    
+                    return `
+                        <tr>
+                            <td>${username}</td>
+                            <td>${currentRole || '无角色'}</td>
+                            <td>
+                                ${isAdmin ? '管理员' : `
+                                    <select class="role-select" id="role_${user.id}">
+                                        <option value="sales" ${currentRole === 'sales' ? 'selected' : ''}>销售</option>
+                                        <option value="finance" ${currentRole === 'finance' ? 'selected' : ''}>财务</option>
+                                        <option value="purchase" ${currentRole === 'purchase' ? 'selected' : ''}>采购</option>
+                                    </select>
+                                    <button class="save-btn" onclick="updateUserRole('${user.id}')">保存</button>
+                                `}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                document.getElementById('userListBody').innerHTML = userListHtml;
+            } catch (error) {
+                console.error('加载用户列表失败：', error);
+                document.getElementById('userListBody').innerHTML = '<tr><td colspan="3">加载用户列表失败，请刷新页面重试</td></tr>';
+            }
+        }
+
+        /**
+         * 更新用户角色
+         * @param {string} userId - 用户ID
+         */
+        async function updateUserRole(userId) {
+            try {
+                const newRole = document.getElementById(`role_${userId}`).value;
+                const user = AV.Object.createWithoutData('_User', userId);
+                user.set('role', newRole);
+                await user.save(null, { useMasterKey: true });
+                
+                alert('角色更新成功！');
+                await loadUserList(); // 刷新用户列表
+            } catch (error) {
+                console.error('更新角色失败：', error);
+                alert('更新角色失败：' + error.message);
+            }
+        }
+
+        /**
+         * 加载角色权限
+         */
+        async function loadRolePermissions() {
+            try {
+                const query = new AV.Query('RolePermissions');
+                const permissions = await query.find();
+                
+                // 创建权限映射
+                const permissionMap = {};
+                permissions.forEach(perm => {
+                    permissionMap[perm.get('role')] = {
+                        deleteOrder: perm.get('deleteOrder') || false,
+                        deleteFile: perm.get('deleteFile') || false,
+                        uploadFile: perm.get('uploadFile') || false,
+                        downloadFile: perm.get('downloadFile') || false
+                    };
+                });
+
+                // 更新复选框状态
+                ['sales', 'finance', 'purchase'].forEach(role => {
+                    const rolePerms = permissionMap[role] || {};
+                    document.getElementById(`${role}_deleteOrder`).checked = rolePerms.deleteOrder || false;
+                    document.getElementById(`${role}_deleteFile`).checked = rolePerms.deleteFile || false;
+                    document.getElementById(`${role}_uploadFile`).checked = rolePerms.uploadFile || false;
+                    document.getElementById(`${role}_downloadFile`).checked = rolePerms.downloadFile || false;
+                });
+            } catch (error) {
+                console.error('加载角色权限失败：', error);
+                alert('加载角色权限失败：' + error.message);
+            }
+        }
+
+        /**
+         * 保存角色权限
+         * @param {string} role - 角色名称
+         */
+        async function saveRolePermissions(role) {
+            try {
+                const query = new AV.Query('RolePermissions');
+                query.equalTo('role', role);
+                let rolePermission = await query.first();
+                
+                if (!rolePermission) {
+                    const RolePermissions = AV.Object.extend('RolePermissions');
+                    rolePermission = new RolePermissions();
+                    rolePermission.set('role', role);
+                }
+
+                rolePermission.set('deleteOrder', document.getElementById(`${role}_deleteOrder`).checked);
+                rolePermission.set('deleteFile', document.getElementById(`${role}_deleteFile`).checked);
+                rolePermission.set('uploadFile', document.getElementById(`${role}_uploadFile`).checked);
+                rolePermission.set('downloadFile', document.getElementById(`${role}_downloadFile`).checked);
+
+                await rolePermission.save();
+                alert('权限保存成功！');
+            } catch (error) {
+                console.error('保存角色权限失败：', error);
+                alert('保存角色权限失败：' + error.message);
+            }
+        }
+
+        // 添加权限检查函数
+        async function checkPermission(action) {
+            const currentUser = AV.User.current();
+            if (!currentUser) return false;
+
+            const role = currentUser.get('role');
+            if (role === 'admin') return true; // 管理员拥有所有权限
+
+            try {
+                const query = new AV.Query('RolePermissions');
+                query.equalTo('role', role);
+                const rolePermission = await query.first();
+                
+                if (!rolePermission) return false;
+                return rolePermission.get(action) === true; // 明确检查是否为 true
+            } catch (error) {
+                console.error('检查权限失败：', error);
+                return false;
+            }
+        }
+
+        /**
+         * 删除文件
+         * @param {string} fileId - 要删除的文件ID
+         */
+        async function deleteFile(fileId) {
+            if (!await checkPermission('deleteFile')) {
+                alert('您没有删除文件的权限');
+                return;
+            }
+
+            if (!confirm('确定要删除这个文件吗？')) {
+                return;
+            }
+
+            try {
+                const file = AV.Object.createWithoutData('FileRecord', fileId);
+                await file.destroy();
+                alert('文件删除成功！');
+                await loadFiles(); // 刷新文件列表
+            } catch (error) {
+                console.error('删除文件失败：', error);
+                alert('删除文件失败：' + error.message);
+            }
+        }
+
+        // 聊天室状态
+        let isOpen = false;
+        let lastMessageTime = new Date(0);
+
+        /**
+         * 切换聊天室显示状态
+         */
+        function toggleChat() {
+            isOpen = !isOpen;
+            document.querySelector('.chat-messages').classList.toggle('open');
+            document.querySelector('.chat-input').classList.toggle('open');
+            document.querySelector('.chat-toggle').textContent = isOpen ? '▼' : '▲';
+            if (isOpen) {
+                loadMessages();
+                scrollToBottom();
+            }
+        }
+
+        /**
+         * 加载聊天消息
+         */
+        async function loadMessages() {
+            try {
+                const query = new AV.Query('ChatMessage');
+                query.include('sender');
+                query.ascending('createdAt');
+                query.limit(50); // 限制加载最近50条消息
+                const messages = await query.find();
+                
+                const currentUser = AV.User.current();
+                const chatMessages = document.getElementById('chatMessages');
+                
+                chatMessages.innerHTML = messages.map(message => {
+                    const sender = message.get('sender');
+                    const isSelf = sender.id === currentUser.id;
+                    const avatarUrl = sender.get('avatarUrl') || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><text x=%2220%22 y=%2220%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>头像</text></svg>';
+                    
+                    return `
+                        <div class="message ${isSelf ? 'self' : ''}">
+                            <div class="message-avatar">
+                                <img src="${avatarUrl}" alt="用户头像">
+                            </div>
+                            <div class="message-content">
+                                <div>${message.get('content')}</div>
+                                <div class="message-info">
+                                    ${sender.get('username')} · ${message.createdAt.toLocaleString()}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                scrollToBottom();
+                lastMessageTime = messages.length > 0 ? messages[messages.length - 1].createdAt : new Date(0);
+            } catch (error) {
+                console.error('加载消息失败：', error);
+            }
+        }
+
+        /**
+         * 发送消息
+         */
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const content = input.value.trim();
+            
+            if (!content) return;
+            
+            try {
+                const ChatMessage = AV.Object.extend('ChatMessage');
+                const message = new ChatMessage();
+                
+                message.set('content', content);
+                message.set('sender', AV.User.current());
+                
+                await message.save();
+                input.value = '';
+                
+                await loadMessages();
+            } catch (error) {
+                console.error('发送消息失败：', error);
+                alert('发送消息失败：' + error.message);
+            }
+        }
+
+        /**
+         * 处理回车键发送消息
+         */
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        /**
+         * 滚动到底部
+         */
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 定时检查新消息
+        setInterval(async () => {
+            if (isOpen) {
+                const query = new AV.Query('ChatMessage');
+                query.greaterThan('createdAt', lastMessageTime);
+                const count = await query.count();
+                if (count > 0) {
+                    await loadMessages();
+                }
+            }
+        }, 5000);
+    </script>
+</body>
+</html> 
