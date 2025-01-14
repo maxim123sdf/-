@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>办公系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.15.0/dist/av-min.js"></script>
+    <script>
+        // 初始化 LeanCloud
+        AV.init({
+            appId: "H0RYZUGpZ6auG7Njrd4fbyWD-gzGzoHsz",
+            appKey: "tenY3Ksbmgns38v74l48Symx",
+            serverURL: "https://h0ryzugp.lc-cn-n1-shared.com"
+        });
+
+        // 检查登录状态并重定向
+        async function checkAndRedirect() {
+            const currentUser = AV.User.current();
+            if (currentUser) {
+                window.location.href = 'office.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // 页面加载时执行
+        window.onload = checkAndRedirect;
+    </script>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <p>正在加载...</p>
+    </div>
+</body>
+</html> 
